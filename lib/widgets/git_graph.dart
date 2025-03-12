@@ -97,7 +97,7 @@ class GitGraph extends StatelessWidget {
                                       ),
                                 ),
                                 Text(
-                                  commit.id.substring(0, 8),
+                                  commit.id.length > 8 ? commit.id.substring(0, 8) : commit.id,
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -113,7 +113,11 @@ class GitGraph extends StatelessWidget {
                                         ),
                                   ),
                                   Text(
-                                    commit.taskId.substring(0, 8),
+                                    commit.taskId == 'merge' || commit.taskId == 'branch' 
+                                        ? commit.taskId 
+                                        : (commit.taskId.length > 8 
+                                            ? commit.taskId.substring(0, 8) 
+                                            : commit.taskId),
                                     style: Theme.of(context).textTheme.bodySmall,
                                   ),
                                 ],

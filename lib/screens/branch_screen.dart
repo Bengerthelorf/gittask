@@ -359,7 +359,7 @@ class _BranchScreenState extends State<BranchScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  '提交ID: ${commit.id.substring(0, 8)}',
+                  '提交ID: ${commit.id.length > 8 ? commit.id.substring(0, 8) : commit.id}',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
@@ -367,13 +367,13 @@ class _BranchScreenState extends State<BranchScreen> {
                   '时间: ${_formatDate(commit.timestamp)}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                if (commit.taskId != 'merge' && commit.taskId != 'branch') ...[
-                  const SizedBox(height: 4),
-                  Text(
-                    '任务ID: ${commit.taskId.substring(0, 8)}',
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
+                  if (commit.taskId != 'merge' && commit.taskId != 'branch') ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      '任务ID: ${commit.taskId.length > 8 ? commit.taskId.substring(0, 8) : commit.taskId}',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
                 const SizedBox(height: 16),
                 if (commit.oldState.isNotEmpty || commit.newState.isNotEmpty) ...[
                   const Text(
