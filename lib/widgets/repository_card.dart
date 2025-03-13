@@ -55,13 +55,13 @@ class RepositoryCard extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.edit_outlined, size: 20),
                       onPressed: onEdit,
-                      tooltip: '编辑仓库',
+                      tooltip: 'Edit Repository',
                     ),
                   if (onDelete != null)
                     IconButton(
                       icon: const Icon(Icons.delete_outline, size: 20),
                       onPressed: onDelete,
-                      tooltip: '删除仓库',
+                      tooltip: 'Delete Repository',
                     ),
                 ],
               ),
@@ -79,11 +79,11 @@ class RepositoryCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '分支数: ${repository.branches.length}',
+                    'Branches: ${repository.branches.length}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   Text(
-                    '创建于: ${DateFormat('yyyy-MM-dd').format(repository.createdAt)}',
+                    'Created on: ${DateFormat('yyyy-MM-dd').format(repository.createdAt)}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],

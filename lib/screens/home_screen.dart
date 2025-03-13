@@ -42,12 +42,12 @@ class HomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    '没有任务仓库',
+                    'No repositories',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '点击右下角的按钮创建一个新的仓库',
+                    'Tap the floating button to create a new repository',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
@@ -98,7 +98,7 @@ class HomeScreen extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('创建新仓库'),
+              title: const Text('Create New Repository'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -106,8 +106,8 @@ class HomeScreen extends StatelessWidget {
                     TextField(
                       controller: nameController,
                       decoration: const InputDecoration(
-                        labelText: '仓库名称',
-                        hintText: '输入仓库名称',
+                        labelText: 'Repository Name',
+                        hintText: 'Enter repository name',
                       ),
                       autofocus: true,
                     ),
@@ -115,13 +115,13 @@ class HomeScreen extends StatelessWidget {
                     TextField(
                       controller: descriptionController,
                       decoration: const InputDecoration(
-                        labelText: '描述',
-                        hintText: '输入仓库描述（可选）',
+                        labelText: 'Description',
+                        hintText: 'Enter repository description (optional)',
                       ),
                       maxLines: 3,
                     ),
                     const SizedBox(height: 16),
-                    const Text('选择颜色'),
+                    const Text('Select Color'),
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,
@@ -156,7 +156,7 @@ class HomeScreen extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('取消'),
+                  child: const Text('Cancel'),
                 ),
                 FilledButton(
                   onPressed: () {
@@ -173,7 +173,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.pop(context);
                     }
                   },
-                  child: const Text('创建'),
+                  child: const Text('Create'),
                 ),
               ],
             );
@@ -194,7 +194,7 @@ class HomeScreen extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('编辑仓库'),
+              title: const Text('Edit Repository'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -202,8 +202,8 @@ class HomeScreen extends StatelessWidget {
                     TextField(
                       controller: nameController,
                       decoration: const InputDecoration(
-                        labelText: '仓库名称',
-                        hintText: '输入仓库名称',
+                        labelText: 'Repository Name',
+                        hintText: 'Enter repository name',
                       ),
                       autofocus: true,
                     ),
@@ -211,13 +211,13 @@ class HomeScreen extends StatelessWidget {
                     TextField(
                       controller: descriptionController,
                       decoration: const InputDecoration(
-                        labelText: '描述',
-                        hintText: '输入仓库描述（可选）',
+                        labelText: 'Description',
+                        hintText: 'Enter repository description (optional)',
                       ),
                       maxLines: 3,
                     ),
                     const SizedBox(height: 16),
-                    const Text('选择颜色'),
+                    const Text('Select Color'),
                     const SizedBox(height: 8),
                     Wrap(
                       spacing: 8,
@@ -252,7 +252,7 @@ class HomeScreen extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('取消'),
+                  child: const Text('Cancel'),
                 ),
                 FilledButton(
                   onPressed: () {
@@ -272,7 +272,7 @@ class HomeScreen extends StatelessWidget {
                       Navigator.pop(context);
                     }
                   },
-                  child: const Text('保存'),
+                  child: const Text('Save'),
                 ),
               ],
             );
@@ -287,12 +287,12 @@ class HomeScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('删除仓库'),
-          content: Text('确定要删除仓库"${repository.name}"吗？这将删除所有相关的分支和任务，且无法恢复。'),
+          title: const Text('Delete Repository'),
+          content: Text('Are you sure you want to delete the repository "${repository.name}"? This will delete all related branches and tasks and cannot be undone.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('取消'),
+              child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () {
@@ -303,7 +303,7 @@ class HomeScreen extends StatelessWidget {
               style: FilledButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
-              child: const Text('删除'),
+              child: const Text('Delete'),
             ),
           ],
         );

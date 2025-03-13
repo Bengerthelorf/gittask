@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppConstants {
-  // 应用名称
+  // Application Name
   static const String appName = 'GitTask';
   
-  // 颜色选项，用于仓库颜色选择
+  // Color options for repository selection
   static const List<Color> colorOptions = [
     Colors.blue,
     Colors.red,
@@ -18,17 +18,17 @@ class AppConstants {
     Colors.cyan,
   ];
   
-  // 任务状态颜色
+  // Task status colors
   static const Map<int, Color> taskStatusColors = {
     0: Colors.grey, // todo
     1: Colors.orange, // inProgress
     2: Colors.green, // done
   };
   
-  // 任务状态名称
+  // Task status names
   static const Map<int, String> taskStatusNames = {
-    0: '待办',
-    1: '进行中',
-    2: '已完成',
+    0: 'To Do',
+    1: 'In Progress',
+    2: 'Completed',
   };
 }

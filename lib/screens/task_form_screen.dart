@@ -9,7 +9,7 @@ import '../utils/constants.dart';
 class TaskFormScreen extends StatefulWidget {
   final Repository repository;
   final Branch branch;
-  final Task? task; // 如果为null，则是创建新任务
+  final Task? task; // If null, then creating a new task
 
   const TaskFormScreen({
     Key? key,
@@ -34,7 +34,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
   void initState() {
     super.initState();
     if (_isEditing) {
-      // 编辑模式，初始化表单数据
+      // Edit mode, initialize form data
       _titleController.text = widget.task!.title;
       _descriptionController.text = widget.task!.description;
       _status = widget.task!.status;
@@ -52,13 +52,13 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_isEditing ? '编辑任务' : '创建任务'),
+        title: Text(_isEditing ? 'Edit Task' : 'Create Task'),
         actions: [
           if (_isEditing)
             IconButton(
               icon: const Icon(Icons.delete),
               onPressed: _confirmDelete,
-              tooltip: '删除任务',
+              tooltip: 'Delete Task',
             ),
         ],
       ),
@@ -67,17 +67,17 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            // 标题
+            // Title
             TextFormField(
               controller: _titleController,
               decoration: const InputDecoration(
-                labelText: '任务标题',
-                hintText: '输入任务标题',
+                labelText: 'Task Title',
+                hintText: 'Enter Task Title',
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
-                  return '请输入任务标题';
+                  return 'Please enter a task title';
                 }
                 return null;
               },
@@ -85,21 +85,21 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
             ),
             const SizedBox(height: 16),
             
-            // 描述
+            // Description
             TextFormField(
               controller: _descriptionController,
               decoration: const InputDecoration(
-                labelText: '任务描述',
-                hintText: '输入任务描述（可选）',
+                labelText: 'Task Description',
+                hintText: 'Enter Task Description (optional)',
                 border: OutlineInputBorder(),
               ),
               maxLines: 5,
             ),
             const SizedBox(height: 16),
             
-            // 状态选择
+            // Task Status
             Text(
-              '任务状态',
+              'Task Status',
               style: Theme.of(context).textTheme.titleMedium,
             ),
             const SizedBox(height: 8),
@@ -130,10 +130,10 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
             
             const SizedBox(height: 32),
             
-            // 保存按钮
+            // Save Button
             FilledButton(
               onPressed: _saveTask,
-              child: Text(_isEditing ? '保存更改' : '创建任务'),
+              child: Text(_isEditing ? 'Save Changes' : 'Create Task'),
             ),
           ],
         ),
@@ -144,7 +144,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
   void _saveTask() {
     if (_formKey.currentState?.validate() ?? false) {
       if (_isEditing) {
-        // 更新任务
+        // Update task
         final updatedTask = widget.task!.copyWith(
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim(),
@@ -159,10 +159,10 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
         );
         
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('任务已更新')),
+          const SnackBar(content: Text('Task updated')),
         );
       } else {
-        // 创建新任务
+        // Create new task
         final newTask = Task(
           title: _titleController.text.trim(),
           description: _descriptionController.text.trim(),
@@ -176,7 +176,7 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
         );
         
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('任务已创建')),
+          const SnackBar(content: Text('Task created')),
         );
       }
       
@@ -189,16 +189,16 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('删除任务'),
-          content: Text('确定要删除任务"${widget.task?.title}"吗？这将删除该任务的所有历史记录，且无法恢复。'),
+          title: const Text('Delete Task'),
+          content: Text('Are you sure you want to delete task "${widget.task?.title}"? This will delete all its history and cannot be undone.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('取消'),
+              child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () {
-                Navigator.pop(context); // 关闭对话框
+                Navigator.pop(context); // Close the dialog
                 
                 if (widget.task != null) {
                   Provider.of<RepositoryProvider>(context, listen: false).deleteTask(
@@ -207,16 +207,16 @@ class _TaskFormScreenState extends State<TaskFormScreen> {
                     widget.task!.id,
                   );
                   
-                  Navigator.pop(context); // 返回上一页
+                  Navigator.pop(context); // Go back to previous screen
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('任务已删除')),
+                    const SnackBar(content: Text('Task deleted')),
                   );
                 }
               },
               style: FilledButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
-              child: const Text('删除'),
+              child: const Text('Delete'),
             ),
           ],
         );

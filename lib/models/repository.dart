@@ -6,9 +6,9 @@ class Repository {
   String name;
   String description;
   DateTime createdAt;
-  String color; // 仓库颜色
+  String color; // Repository color
   
-  // 分支列表
+  // Branch list
   List<Branch> branches;
   
   Repository({
@@ -16,24 +16,24 @@ class Repository {
     required this.name,
     this.description = '',
     DateTime? createdAt,
-    this.color = '#2196F3', // 默认蓝色
+    this.color = '#2196F3', // Default blue color
     List<Branch>? branches,
   }) : 
     id = id ?? const Uuid().v4(),
     createdAt = createdAt ?? DateTime.now(),
     branches = branches ?? [] {
-    // 确保新仓库至少有一个主分支
+    // Ensure that a new repository has at least one main branch
     if (branches == null || branches.isEmpty) {
       this.branches.add(Branch(
         repositoryId: this.id,
         name: 'main',
-        description: '主分支',
+        description: 'Main branch',
         isMain: true,
       ));
     }
   }
   
-  // 将仓库转换为可存储的Map
+  // Convert repository to a storable Map
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -45,7 +45,7 @@ class Repository {
     };
   }
   
-  // 从Map创建仓库
+  // Create repository from Map
   factory Repository.fromMap(Map<String, dynamic> map) {
     return Repository(
       id: map['id'],
@@ -59,7 +59,7 @@ class Repository {
     );
   }
   
-  // 获取主分支
+  // Get main branch
   Branch getMainBranch() {
     return branches.firstWhere(
       (branch) => branch.isMain,
@@ -67,12 +67,12 @@ class Repository {
     );
   }
   
-  // 添加分支
+  // Add branch
   void addBranch(Branch branch) {
     branches.add(branch);
   }
   
-  // 删除分支
+  // Delete branch
   void deleteBranch(String branchId) {
     branches.removeWhere((branch) => branch.id == branchId && !branch.isMain);
   }

@@ -26,7 +26,7 @@ class GitGraph extends StatelessWidget {
           children: [
             Icon(Icons.history, size: 48, color: Colors.grey),
             SizedBox(height: 8),
-            Text('没有提交记录', style: TextStyle(fontSize: 16)),
+            Text('No commit records', style: TextStyle(fontSize: 16)),
           ],
         ),
       );
@@ -127,18 +127,18 @@ class GitGraph extends StatelessWidget {
   
   // 根据提交类型确定图标
   IconData _getCommitIcon(Commit commit) {
-    if (commit.message.contains('创建分支:')) {
-      return Icons.call_split_rounded; // 创建分支图标
-    } else if (commit.message.contains('合并分支:')) {
-      return Icons.call_merge_rounded; // 合并分支图标
-    } else if (commit.message.contains('创建任务:')) {
-      return Icons.add_circle_outline_rounded; // 创建任务图标
-    } else if (commit.message.contains('更新任务:')) {
-      return Icons.edit_rounded; // 更新任务图标
-    } else if (commit.message.contains('删除任务:')) {
-      return Icons.delete_outline_rounded; // 删除任务图标
+    if (commit.message.contains('Created branch:')) {
+      return Icons.call_split_rounded; // Create branch icon
+    } else if (commit.message.contains('Merge branch:')) {
+      return Icons.call_merge_rounded; // Merge branch icon
+    } else if (commit.message.contains('Create task:')) {
+      return Icons.add_circle_outline_rounded; // Create task icon
+    } else if (commit.message.contains('Update task:')) {
+      return Icons.edit_rounded; // Update task icon
+    } else if (commit.message.contains('Delete task:')) {
+      return Icons.delete_outline_rounded; // Delete task icon
     } else {
-      return Icons.commit_rounded; // 默认提交图标
+      return Icons.commit_rounded; // Default commit icon
     }
   }
   
@@ -194,7 +194,7 @@ class GitGraph extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            '提交ID: ',
+                            'Commit ID: ',
                             style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -212,12 +212,12 @@ class GitGraph extends StatelessWidget {
                           ),
                         ],
                       ),
-                      if (commit.taskId != 'merge' && commit.taskId != 'branch') ...[
+                      if (commit.taskId != 'Merge' && commit.taskId != 'branch') ...[
                         const SizedBox(height: 4),
                         Row(
                           children: [
                             Text(
-                              '任务ID: ',
+                              'Task ID: ',
                               style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -437,17 +437,17 @@ class BranchAnalyzer {
   
   // 判断是否是创建分支的提交
   bool isCreateBranchCommit(Commit commit) {
-    return commit.message.contains('创建分支:');
+    return commit.message.contains('Created branch:');
   }
   
   // 判断是否是合并提交
   bool isMergeCommit(Commit commit) {
-    return commit.message.contains('合并分支:');
+    return commit.message.contains('Merge branch:');
   }
   
   // 从提交信息中提取分支名
   String? extractBranchName(Commit commit) {
-    final match = RegExp(r'创建分支: (.*?)(?: \(|$)').firstMatch(commit.message);
+    final match = RegExp(r'Created branch: (.*?)(?: \(|$)').firstMatch(commit.message);
     if (match != null && match.groupCount >= 1) {
       return match.group(1);
     }
@@ -456,7 +456,7 @@ class BranchAnalyzer {
   
   // 从合并提交信息中提取源分支和目标分支
   Map<String, String>? extractMergeInfo(Commit commit) {
-    final match = RegExp(r'合并分支: (.*?) -> (.*)').firstMatch(commit.message);
+    final match = RegExp(r'Merge branch: (.*?) -> (.*)').firstMatch(commit.message);
     if (match != null && match.groupCount >= 2) {
       return {
         'source': match.group(1)?.trim() ?? '',

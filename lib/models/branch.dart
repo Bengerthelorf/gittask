@@ -11,10 +11,10 @@ class Branch {
   bool isMain;
   String? parentBranchId;
   
-  // 任务列表
+  // Task list
   List<Task> tasks;
   
-  // 提交记录
+  // Commit history
   List<Commit> commits;
   
   Branch({
@@ -33,7 +33,7 @@ class Branch {
     tasks = tasks ?? [],
     commits = commits ?? [];
   
-  // 将分支转换为可存储的Map
+  // Convert branch to storable Map
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -48,7 +48,7 @@ class Branch {
     };
   }
   
-  // 从Map创建分支
+  // Create branch from Map
   factory Branch.fromMap(Map<String, dynamic> map) {
     return Branch(
       id: map['id'],
@@ -67,20 +67,20 @@ class Branch {
     );
   }
   
-  // 添加任务
+  // Add task
   void addTask(Task task) {
     tasks.add(task);
     commits.add(
       Commit(
         taskId: task.id,
-        message: '创建任务: ${task.title}',
+        message: 'Create task: ${task.title}', // changed from '创建任务: ${task.title}'
         oldState: {},
         newState: task.toMap(),
       ),
     );
   }
   
-  // 更新任务
+  // Update task
   void updateTask(Task updatedTask) {
     final int index = tasks.indexWhere((task) => task.id == updatedTask.id);
     if (index != -1) {
@@ -91,13 +91,13 @@ class Branch {
         Commit.fromTaskChange(
           oldTask: oldTask,
           newTask: updatedTask,
-          message: '更新任务: ${updatedTask.title}',
+          message: 'Update task: ${updatedTask.title}', // changed from '更新任务: ${updatedTask.title}'
         ),
       );
     }
   }
   
-  // 删除任务
+  // Delete task
   void deleteTask(String taskId) {
     final int index = tasks.indexWhere((task) => task.id == taskId);
     if (index != -1) {
@@ -107,7 +107,7 @@ class Branch {
       commits.add(
         Commit(
           taskId: taskId,
-          message: '删除任务: ${oldTask.title}',
+          message: 'Delete task: ${oldTask.title}', // changed from '删除任务: ${oldTask.title}'
           oldState: oldTask.toMap(),
           newState: {},
         ),
@@ -115,15 +115,15 @@ class Branch {
     }
   }
   
-  // 从另一个分支合并任务
+  // Merge tasks from another branch
   void mergeBranch(Branch sourceBranch) {
-    // 在实际应用中，这里可以实现更复杂的合并逻辑，
-    // 例如解决任务冲突等
+    // In a real application, you can implement a more complex merge logic here,
+    // such as resolving task conflicts.
     for (final task in sourceBranch.tasks) {
       if (!tasks.any((t) => t.id == task.id)) {
         tasks.add(task);
       } else {
-        // 如果任务已存在，可以选择保留较新的版本
+        // If the task already exists, you can choose to keep the newer version
         final existingIndex = tasks.indexWhere((t) => t.id == task.id);
         if (existingIndex != -1) {
           final existingTask = tasks[existingIndex];
@@ -135,11 +135,11 @@ class Branch {
       }
     }
     
-    // 添加合并提交记录
+    // Add merge commit record
     commits.add(
       Commit(
         taskId: 'merge',
-        message: '合并分支: ${sourceBranch.name} -> ${name}',
+        message: 'Merge branch: ${sourceBranch.name} -> ${name}', // changed from '合并分支: ${sourceBranch.name} -> ${name}'
         oldState: {'branchId': sourceBranch.id},
         newState: {'branchId': id},
       ),

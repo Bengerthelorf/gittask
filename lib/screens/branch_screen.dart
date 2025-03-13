@@ -35,13 +35,13 @@ class _BranchScreenState extends State<BranchScreen> {
           children: [
             Text(widget.repository.name),
             Text(
-              widget.branch.name + (widget.branch.isMain ? ' (主分支)' : ''),
+              widget.branch.name + (widget.branch.isMain ? ' (Main Branch)' : ''),
               style: Theme.of(context).textTheme.bodyMedium,
             ),
           ],
         ),
         actions: [
-          // 切换视图按钮
+          // Toggle view button
           IconButton(
             icon: Icon(_showGraph ? Icons.list : Icons.account_tree),
             onPressed: () {
@@ -49,7 +49,7 @@ class _BranchScreenState extends State<BranchScreen> {
                 _showGraph = !_showGraph;
               });
             },
-            tooltip: _showGraph ? '任务列表' : 'Git图表',
+            tooltip: _showGraph ? 'Task List' : 'Git Graph',
           ),
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -73,13 +73,13 @@ class _BranchScreenState extends State<BranchScreen> {
                   const Icon(Icons.error_outline, size: 64, color: Colors.red),
                   const SizedBox(height: 16),
                   Text(
-                    '仓库不存在',
+                    'Repository not found',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('返回'),
+                    child: const Text('Go Back'),
                   ),
                 ],
               ),
@@ -100,7 +100,7 @@ class _BranchScreenState extends State<BranchScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '提交历史',
+                    'Commit History',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 16),
@@ -111,7 +111,7 @@ class _BranchScreenState extends State<BranchScreen> {
                           const Icon(Icons.history, size: 48, color: Colors.grey),
                           const SizedBox(height: 8),
                           Text(
-                            '没有提交记录',
+                            'No commit history',
                             style: Theme.of(context).textTheme.titleMedium,
                           ),
                         ],
@@ -139,12 +139,12 @@ class _BranchScreenState extends State<BranchScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      '没有任务',
+                      'No Tasks',
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '点击右下角的按钮创建一个新的任务',
+                      'Click the button at the bottom right to create a new task',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
@@ -243,12 +243,12 @@ class _BranchScreenState extends State<BranchScreen> {
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  '描述',
+                  'Description',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  task.description.isEmpty ? '无描述' : task.description,
+                  task.description.isEmpty ? 'No description' : task.description,
                   style: TextStyle(
                     color: task.description.isEmpty
                         ? Colors.grey
@@ -257,13 +257,13 @@ class _BranchScreenState extends State<BranchScreen> {
                 ),
                 const SizedBox(height: 16),
                 const Text(
-                  '任务历史',
+                  'Task History',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
                 // 显示与该任务相关的提交记录
                 if (_getTaskCommits(branch, task.id).isEmpty)
-                  const Text('无提交记录', style: TextStyle(color: Colors.grey))
+                  const Text('No commit history', style: TextStyle(color: Colors.grey))
                 else
                   for (final commit in _getTaskCommits(branch, task.id))
                     Padding(
@@ -283,7 +283,7 @@ class _BranchScreenState extends State<BranchScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '时间: ${_formatDate(commit.timestamp)}',
+                              'Time: ${_formatDate(commit.timestamp)}',
                               style: Theme.of(context).textTheme.bodySmall,
                             ),
                           ],
@@ -294,16 +294,16 @@ class _BranchScreenState extends State<BranchScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // 编辑按钮
+                    // Edit button
                     ElevatedButton.icon(
                       onPressed: () {
                         Navigator.pop(context);
                         _navigateToTaskForm(context, repository, branch, task);
                       },
                       icon: const Icon(Icons.edit),
-                      label: const Text('编辑'),
+                      label: const Text('Edit'),
                     ),
-                    // 更改状态按钮
+                    // Change status button
                     FilledButton.icon(
                       onPressed: () {
                         Navigator.pop(context);
@@ -315,7 +315,7 @@ class _BranchScreenState extends State<BranchScreen> {
                         );
                       },
                       icon: const Icon(Icons.sync),
-                      label: Text('更改为${_getNextStatusName(task.status)}'),
+                      label: Text('Change to ${_getNextStatusName(task.status)}'),
                     ),
                   ],
                 ),
@@ -359,25 +359,25 @@ class _BranchScreenState extends State<BranchScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  '提交ID: ${commit.id.length > 8 ? commit.id.substring(0, 8) : commit.id}',
+                  'Commit ID: ${commit.id.length > 8 ? commit.id.substring(0, 8) : commit.id}',
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  '时间: ${_formatDate(commit.timestamp)}',
+                  'Time: ${_formatDate(commit.timestamp)}',
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                   if (commit.taskId != 'merge' && commit.taskId != 'branch') ...[
                     const SizedBox(height: 4),
                     Text(
-                      '任务ID: ${commit.taskId.length > 8 ? commit.taskId.substring(0, 8) : commit.taskId}',
+                      'Task ID: ${commit.taskId.length > 8 ? commit.taskId.substring(0, 8) : commit.taskId}',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                   ],
                 const SizedBox(height: 16),
                 if (commit.oldState.isNotEmpty || commit.newState.isNotEmpty) ...[
                   const Text(
-                    '变更详情',
+                    'Change Details',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
@@ -392,36 +392,36 @@ class _BranchScreenState extends State<BranchScreen> {
                       children: [
                         // 如果是任务创建
                         if (commit.oldState.isEmpty && commit.newState.isNotEmpty) ...[
-                          const Text('新建任务'),
+                          const Text('New Task'),
                           if (commit.newState['title'] != null)
-                            Text('标题: ${commit.newState['title']}'),
+                            Text('Title: ${commit.newState['title']}'),
                           if (commit.newState['description'] != null)
-                            Text('描述: ${commit.newState['description']}'),
+                            Text('Description: ${commit.newState['description']}'),
                         ]
                         // 如果是任务删除
                         else if (commit.oldState.isNotEmpty && commit.newState.isEmpty) ...[
-                          const Text('删除任务'),
+                          const Text('Deleted Task'),
                           if (commit.oldState['title'] != null)
-                            Text('标题: ${commit.oldState['title']}'),
+                            Text('Title: ${commit.oldState['title']}'),
                         ]
                         // 如果是任务更新
                         else if (commit.oldState.isNotEmpty && commit.newState.isNotEmpty) ...[
-                          const Text('更新任务'),
+                          const Text('Updated Task'),
                           // 比较标题变化
                           if (commit.oldState['title'] != commit.newState['title']) ...[
-                            const Text('标题:'),
+                            const Text('Title:'),
                             Text('- ${commit.oldState['title']}', style: const TextStyle(color: Colors.red)),
                             Text('+ ${commit.newState['title']}', style: const TextStyle(color: Colors.green)),
                           ],
                           // 比较描述变化
                           if (commit.oldState['description'] != commit.newState['description']) ...[
-                            const Text('描述:'),
+                            const Text('Description:'),
                             Text('- ${commit.oldState['description']}', style: const TextStyle(color: Colors.red)),
                             Text('+ ${commit.newState['description']}', style: const TextStyle(color: Colors.green)),
                           ],
                           // 比较状态变化
                           if (commit.oldState['status'] != commit.newState['status']) ...[
-                            const Text('状态:'),
+                            const Text('Status:'),
                             Text('- ${_getStatusName(TaskStatus.values[commit.oldState['status']])}', 
                                 style: const TextStyle(color: Colors.red)),
                             Text('+ ${_getStatusName(TaskStatus.values[commit.newState['status']])}', 
@@ -492,12 +492,12 @@ class _BranchScreenState extends State<BranchScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('删除任务'),
-          content: Text('确定要删除任务"${task.title}"吗？这将删除该任务的所有历史记录，且无法恢复。'),
+          title: const Text('Delete Task'),
+          content: Text('Are you sure you want to delete task "${task.title}"? This will delete all its history and cannot be undone.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('取消'),
+              child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () {
@@ -508,7 +508,7 @@ class _BranchScreenState extends State<BranchScreen> {
               style: FilledButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
-              child: const Text('删除'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -546,11 +546,11 @@ class _BranchScreenState extends State<BranchScreen> {
   String _getStatusName(TaskStatus status) {
     switch (status) {
       case TaskStatus.todo:
-        return '待办';
+        return 'To Do';
       case TaskStatus.inProgress:
-        return '进行中';
+        return 'In Progress';
       case TaskStatus.done:
-        return '已完成';
+        return 'Completed';
     }
   }
 

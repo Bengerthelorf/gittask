@@ -32,7 +32,7 @@ class RepositoryScreen extends StatelessWidget {
           // 获取最新的仓库数据
           final updatedRepository = repositoryProvider.getRepositoryById(repository.id);
           if (updatedRepository == null) {
-            // 仓库已被删除
+            // Repository has been deleted
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -40,13 +40,13 @@ class RepositoryScreen extends StatelessWidget {
                   const Icon(Icons.error_outline, size: 64, color: Colors.red),
                   const SizedBox(height: 16),
                   Text(
-                    '仓库不存在',
+                    'Repository not found',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
                   ElevatedButton(
                     onPressed: () => Navigator.pop(context),
-                    child: const Text('返回'),
+                    child: const Text('Back'),
                   ),
                 ],
               ),
@@ -65,12 +65,12 @@ class RepositoryScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    '没有分支',
+                    'No branches',
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    '点击右下角的按钮创建一个新的分支',
+                    'Tap the button at the bottom right to create a new branch',
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                 ],
@@ -129,7 +129,7 @@ class RepositoryScreen extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: const Text('创建新分支'),
+              title: const Text('Create New Branch'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -137,8 +137,8 @@ class RepositoryScreen extends StatelessWidget {
                     TextField(
                       controller: nameController,
                       decoration: const InputDecoration(
-                        labelText: '分支名称',
-                        hintText: '输入分支名称',
+                        labelText: 'Branch Name',
+                        hintText: 'Enter branch name',
                       ),
                       autofocus: true,
                     ),
@@ -146,15 +146,15 @@ class RepositoryScreen extends StatelessWidget {
                     TextField(
                       controller: descriptionController,
                       decoration: const InputDecoration(
-                        labelText: '描述',
-                        hintText: '输入分支描述（可选）',
+                        labelText: 'Description',
+                        hintText: 'Enter branch description (optional)',
                       ),
                       maxLines: 3,
                     ),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
                       decoration: const InputDecoration(
-                        labelText: '从哪个分支创建',
+                        labelText: 'Select Parent Branch',
                       ),
                       value: parentBranchId,
                       items: repository.branches
@@ -175,7 +175,7 @@ class RepositoryScreen extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('取消'),
+                  child: const Text('Cancel'),
                 ),
                 FilledButton(
                   onPressed: () {
@@ -199,7 +199,7 @@ class RepositoryScreen extends StatelessWidget {
                           // 添加分支创建的提交记录
                           Commit(
                             taskId: 'branch',
-                            message: '创建分支: ${nameController.text.trim()} (从 ${parentBranch.name})',
+                            message: 'Created branch: ${nameController.text.trim()} (from ${parentBranch.name})',
                             oldState: {'parentBranchId': parentBranch.id},
                             newState: {},
                           ),
@@ -212,7 +212,7 @@ class RepositoryScreen extends StatelessWidget {
                       Navigator.pop(context);
                     }
                   },
-                  child: const Text('创建'),
+                  child: const Text('Create'),
                 ),
               ],
             );
@@ -231,7 +231,7 @@ class RepositoryScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('编辑分支'),
+          title: const Text('Edit Branch'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -239,8 +239,8 @@ class RepositoryScreen extends StatelessWidget {
                 TextField(
                   controller: nameController,
                   decoration: const InputDecoration(
-                    labelText: '分支名称',
-                    hintText: '输入分支名称',
+                    labelText: 'Branch Name',
+                    hintText: 'Enter branch name',
                   ),
                   autofocus: true,
                   enabled: !branch.isMain, // 主分支不能修改名称
@@ -249,8 +249,8 @@ class RepositoryScreen extends StatelessWidget {
                 TextField(
                   controller: descriptionController,
                   decoration: const InputDecoration(
-                    labelText: '描述',
-                    hintText: '输入分支描述（可选）',
+                    labelText: 'Description',
+                    hintText: 'Enter branch description (optional)',
                   ),
                   maxLines: 3,
                 ),
@@ -260,7 +260,7 @@ class RepositoryScreen extends StatelessWidget {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('取消'),
+              child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () {
@@ -280,7 +280,7 @@ class RepositoryScreen extends StatelessWidget {
                       // 添加分支更新的提交记录
                       Commit(
                         taskId: 'branch',
-                        message: '更新分支: ${branch.isMain ? branch.name : nameController.text.trim()}',
+                        message: 'Updated branch: ${branch.isMain ? branch.name : nameController.text.trim()}',
                         oldState: {
                           'name': branch.name,
                           'description': branch.description,
@@ -311,7 +311,7 @@ class RepositoryScreen extends StatelessWidget {
                   Navigator.pop(context);
                 }
               },
-              child: const Text('保存'),
+              child: const Text('Save'),
             ),
           ],
         );
@@ -325,12 +325,12 @@ class RepositoryScreen extends StatelessWidget {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('删除分支'),
-          content: Text('确定要删除分支"${branch.name}"吗？这将删除该分支的所有任务，且无法恢复。'),
+          title: const Text('Delete Branch'),
+          content: Text('Are you sure you want to delete branch "${branch.name}"? This will remove all its tasks and cannot be undone.'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text('取消'),
+              child: const Text('Cancel'),
             ),
             FilledButton(
               onPressed: () {
@@ -341,7 +341,7 @@ class RepositoryScreen extends StatelessWidget {
               style: FilledButton.styleFrom(
                 backgroundColor: Colors.red,
               ),
-              child: const Text('删除'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -364,7 +364,7 @@ class RepositoryScreen extends StatelessWidget {
       // 没有可合并的目标分支
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('没有可合并的目标分支'),
+          content: Text('No available target branch for merging'),
         ),
       );
       return;
@@ -376,19 +376,19 @@ class RepositoryScreen extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return AlertDialog(
-              title: Text('合并分支: ${sourceBranch.name}'),
+              title: Text('Merge Branch: ${sourceBranch.name}'),
               content: SingleChildScrollView(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text('选择要合并到的目标分支:'),
+                    const Text('Select target branch:'),
                     const SizedBox(height: 16),
                     DropdownButtonFormField<String>(
                       value: targetBranchId,
                       items: targetBranches
                           .map((branch) => DropdownMenuItem(
                                 value: branch.id,
-                                child: Text(branch.name + (branch.isMain ? ' (主分支)' : '')),
+                                child: Text(branch.name + (branch.isMain ? ' (Main branch)' : '')),
                               ))
                           .toList(),
                       onChanged: (value) {
@@ -399,7 +399,7 @@ class RepositoryScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     const Text(
-                      '合并后，目标分支将包含源分支的所有任务，冲突的任务将以最新更新的版本为准。',
+                      'After merging, the target branch will contain all tasks from the source branch with conflicts resolved to the latest updates.',
                       style: TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ],
@@ -408,7 +408,7 @@ class RepositoryScreen extends StatelessWidget {
               actions: [
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child: const Text('取消'),
+                  child: const Text('Cancel'),
                 ),
                 FilledButton(
                   onPressed: () {
@@ -420,14 +420,14 @@ class RepositoryScreen extends StatelessWidget {
                       
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('成功合并分支 ${sourceBranch.name} 到 ${
+                          content: Text('Successfully merged branch ${sourceBranch.name} into ${
                             repository.branches.firstWhere((b) => b.id == targetBranchId).name
                           }'),
                         ),
                       );
                     }
                   },
-                  child: const Text('合并'),
+                  child: const Text('Merge'),
                 ),
               ],
             );

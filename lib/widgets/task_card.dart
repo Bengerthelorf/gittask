@@ -87,13 +87,13 @@ class TaskCard extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.edit_outlined, size: 20),
                       onPressed: onEdit,
-                      tooltip: '编辑任务',
+                      tooltip: 'Edit Task',
                     ),
                   if (onDelete != null)
                     IconButton(
                       icon: const Icon(Icons.delete_outline, size: 20),
                       onPressed: onDelete,
-                      tooltip: '删除任务',
+                      tooltip: 'Delete Task',
                     ),
                 ],
               ),
@@ -111,12 +111,12 @@ class TaskCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    '创建于: ${DateFormat('yyyy-MM-dd').format(task.createdAt)}',
+                    'Created on: ${DateFormat('yyyy-MM-dd').format(task.createdAt)}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   if (task.updatedAt != null)
                     Text(
-                      '最后更新: ${DateFormat('yyyy-MM-dd').format(task.updatedAt!)}',
+                      'Last updated: ${DateFormat('yyyy-MM-dd').format(task.updatedAt!)}',
                       style: Theme.of(context).textTheme.bodySmall,
                     ),
                 ],
@@ -128,7 +128,7 @@ class TaskCard extends StatelessWidget {
     );
   }
 
-  // 获取下一个状态
+  // Get the next status
   TaskStatus _getNextStatus(TaskStatus currentStatus) {
     switch (currentStatus) {
       case TaskStatus.todo:

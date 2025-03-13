@@ -22,7 +22,7 @@ class BranchCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // 计算任务统计
+    // Calculate task statistics
     final int totalTasks = branch.tasks.length;
     final int completedTasks = branch.tasks
         .where((task) => task.status == TaskStatus.done)
@@ -51,7 +51,7 @@ class BranchCard extends StatelessWidget {
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
-                      branch.name + (branch.isMain ? ' (主分支)' : ''),
+                      branch.name + (branch.isMain ? ' (Main Branch)' : ''),
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
@@ -61,19 +61,19 @@ class BranchCard extends StatelessWidget {
                     IconButton(
                       icon: const Icon(Icons.merge_type, size: 20),
                       onPressed: onMerge,
-                      tooltip: '合并分支',
+                      tooltip: 'Merge Branch',
                     ),
                   if (onEdit != null)
                     IconButton(
                       icon: const Icon(Icons.edit_outlined, size: 20),
                       onPressed: onEdit,
-                      tooltip: '编辑分支',
+                      tooltip: 'Edit Branch',
                     ),
                   if (onDelete != null && !branch.isMain)
                     IconButton(
                       icon: const Icon(Icons.delete_outline, size: 20),
                       onPressed: onDelete,
-                      tooltip: '删除分支',
+                      tooltip: 'Delete Branch',
                     ),
                 ],
               ),
@@ -94,7 +94,7 @@ class BranchCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          '任务进度: $completedTasks/$totalTasks',
+                          'Task Progress: $completedTasks/$totalTasks',
                           style: Theme.of(context).textTheme.bodySmall,
                         ),
                         const SizedBox(height: 4),
@@ -108,7 +108,7 @@ class BranchCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 16),
                   Text(
-                    '创建于: ${DateFormat('MM-dd').format(branch.createdAt)}',
+                    'Created on: ${DateFormat('MM-dd').format(branch.createdAt)}',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ],
