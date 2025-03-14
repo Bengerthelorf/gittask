@@ -1,5 +1,5 @@
 name: git_task
-description: A task management app with Git concepts
+description: GitTask - A task management app with Git concepts
 publish_to: 'none'
 version: 1.0.0+1
 

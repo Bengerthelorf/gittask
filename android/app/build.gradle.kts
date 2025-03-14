@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.gittask"
+    namespace = "io.gittask.app"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 

@@ -1,4 +1,4 @@
-package com.example.gittask
+package io.gittask.app
 
 import io.flutter.embedding.android.FlutterActivity
 
