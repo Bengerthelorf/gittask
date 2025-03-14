@@ -1,4 +1,4 @@
-# GitTask - Git-Inspired Task Collaboration Platform
+# ![icon](assets/icons/icon_small_2.png) GitTask - Git-Inspired Task Manager
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.16-blue?logo=flutter)](https://flutter.dev)
 [![License](https://img.shields.io/badge/license-GPLv3-blue)](LICENSE)
