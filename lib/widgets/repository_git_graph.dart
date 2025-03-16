@@ -422,6 +422,7 @@ class _RepositoryGitGraphState extends State<RepositoryGitGraph> {
           branchCommitRanges: branchCommitRanges,
           allCommitsCount: _allCommits.length,
           rowHeight: _rowHeight,
+          branchRelations: _branchRelations, // 新增传参
         ),
         child: ListView.builder(
           itemCount: _allCommits.length,
@@ -447,26 +448,7 @@ class _RepositoryGitGraphState extends State<RepositoryGitGraph> {
               height: _rowHeight,
               child: Stack(
                 children: [
-                  // 当前分支的节点
-                  Positioned(
-                    left: xPosition - _nodeRadius,
-                    top: (_rowHeight - _nodeRadius * 2) / 2,
-                    child: _buildCommitNode(context, commit, branchInfo.color),
-                  ),
-                  
-                  // 额外分支的节点（例如合并提交）
-                  ...additionalBranchesAtThisCommit.map((otherBranchName) {
-                    final otherBranchInfo = _branchInfoMap[otherBranchName];
-                    if (otherBranchInfo == null) return const SizedBox();
-                    
-                    return Positioned(
-                      left: otherBranchInfo.xPosition - _nodeRadius,
-                      top: (_rowHeight - _nodeRadius * 2) / 2,
-                      child: _buildCommitNode(context, commit, otherBranchInfo.color),
-                    );
-                  }).toList(),
-                  
-                  // 分支关系线（如创建、合并）
+                  // 1. 先绘制分支关系线 - 放在最底层
                   CustomPaint(
                     painter: CommitConnectionPainter(
                       commit: commit,
@@ -477,7 +459,7 @@ class _RepositoryGitGraphState extends State<RepositoryGitGraph> {
                     size: Size(MediaQuery.of(context).size.width, _rowHeight),
                   ),
                   
-                  // 提交信息卡片
+                  // 2. 提交信息卡片 - 放在中间层
                   Positioned(
                     left: _getTextLeftPosition(),
                     right: 8,
@@ -485,6 +467,25 @@ class _RepositoryGitGraphState extends State<RepositoryGitGraph> {
                     bottom: 8,
                     child: _buildCommitCard(context, commit),
                   ),
+                  
+                  // 3. 当前分支的节点 - 放在最上层
+                  Positioned(
+                    left: xPosition - _nodeRadius,
+                    top: (_rowHeight - _nodeRadius * 2) / 2,
+                    child: _buildCommitNode(context, commit, branchInfo.color),
+                  ),
+                  
+                  // 4. 额外分支的节点（例如合并提交）- 也在最上层
+                  ...additionalBranchesAtThisCommit.map((otherBranchName) {
+                    final otherBranchInfo = _branchInfoMap[otherBranchName];
+                    if (otherBranchInfo == null) return const SizedBox();
+                    
+                    return Positioned(
+                      left: otherBranchInfo.xPosition - _nodeRadius,
+                      top: (_rowHeight - _nodeRadius * 2) / 2,
+                      child: _buildCommitNode(context, commit, otherBranchInfo.color),
+                    );
+                  }).toList(),
                 ],
               ),
             );
@@ -664,27 +665,27 @@ class GitGraphBackgroundPainter extends CustomPainter {
   final Map<String, CommitRange> branchCommitRanges;
   final int allCommitsCount;
   final double rowHeight;
+  final Map<String, Map<String, dynamic>> branchRelations; // 新增属性
   
   GitGraphBackgroundPainter({
     required this.branchInfoMap,
     required this.branchCommitRanges,
     required this.allCommitsCount,
     required this.rowHeight,
+    required this.branchRelations, // 新增构造函数参数
   });
   
   @override
   void paint(Canvas canvas, Size size) {
     final double totalHeight = allCommitsCount * rowHeight;
-    
-    // 先绘制main分支的完整线条，因为它应该从头到尾显示
+    // 绘制 main 分支的垂直线
     final mainBranchInfo = branchInfoMap['main'];
+    // main 分支蓝色线始于 y=0
     if (mainBranchInfo != null) {
       final mainPaint = Paint()
         ..color = mainBranchInfo.color.withOpacity(0.6)
         ..strokeWidth = 2
         ..style = PaintingStyle.stroke;
-      
-      // 绘制main分支的垂直线
       canvas.drawLine(
         Offset(mainBranchInfo.xPosition, 0),
         Offset(mainBranchInfo.xPosition, totalHeight),
@@ -692,12 +693,10 @@ class GitGraphBackgroundPainter extends CustomPainter {
       );
     }
     
-    // 绘制其他分支的线条，只在有提交的范围内显示
+    // 绘制其他分支的线条
     for (final entry in branchInfoMap.entries) {
       final branchName = entry.key;
       final branchInfo = entry.value;
-      
-      // 跳过main分支，已经处理过了
       if (branchName == 'main') continue;
       
       final range = branchCommitRanges[branchName];
@@ -707,16 +706,31 @@ class GitGraphBackgroundPainter extends CustomPainter {
           ..strokeWidth = 2
           ..style = PaintingStyle.stroke;
         
-        // 计算起点和终点
+        // 计算分支有提交区域的起点与终点
         final startY = range.firstIndex * rowHeight + rowHeight / 2;
         final endY = range.lastIndex * rowHeight + rowHeight / 2;
-        
-        // 绘制分支线
         canvas.drawLine(
           Offset(branchInfo.xPosition, startY),
           Offset(branchInfo.xPosition, endY),
           branchPaint,
         );
+        
+        // 判断是否有 merge（存在 merge 后不绘制延长线）
+        bool isMerged = branchRelations.values.any((relation) =>
+            relation['type'] == 'merge' && relation['source'] == branchName);
+        
+        // 对未 merge 的分支，绘制灰色延长线，延伸至 main 分支蓝色线的顶端 (y = 0)
+        if (!isMerged) {
+          final extraPaint = Paint()
+            ..color = Colors.grey
+            ..strokeWidth = 2
+            ..style = PaintingStyle.stroke;
+          canvas.drawLine(
+            Offset(branchInfo.xPosition, startY),
+            Offset(branchInfo.xPosition, 0),
+            extraPaint,
+          );
+        }
       }
     }
   }
