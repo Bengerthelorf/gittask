@@ -247,31 +247,45 @@ class _SettingsScreenState extends State<SettingsScreen> {
       _isCheckingForUpdates = true;
     });
     
-    // On macOS, check for network permissions first
-    if (Platform.isMacOS) {
-      final permissionsOk = await UpdateService.openNetworkPermissionsIfNeeded();
-      if (!permissionsOk && mounted) {
-        setState(() {
-          _isCheckingForUpdates = false;
-        });
-        
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Row(
-              children: [
-                Icon(Icons.security, color: Colors.white),
-                SizedBox(width: 12),
-                Expanded(
-                  child: Text('GitTask needs network permission to check for updates. Please check system preferences.'),
-                ),
-              ],
-            ),
-            behavior: SnackBarBehavior.floating,
-            duration: Duration(seconds: 5),
-          ),
-        );
-        return;
+    // Check for network permissions or connectivity issues
+    bool networkOk = await UpdateService.openNetworkPermissionsIfNeeded();
+    
+    if (!networkOk) {
+      if (!mounted) return;
+      
+      setState(() {
+        _isCheckingForUpdates = false;
+      });
+      
+      // Handle platform-specific messages
+      String message = 'Unable to check for updates. Please check your internet connection.';
+      
+      if (Platform.isMacOS) {
+        message = 'GitTask needs network permission to check for updates. Please check system preferences.';
+      } else if (Platform.isAndroid) {
+        message = 'Unable to check for updates. Please make sure you have an internet connection.';
       }
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Platform.isMacOS ? Icons.security : Icons.signal_wifi_off, color: Colors.white),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Text(message),
+              ),
+            ],
+          ),
+          behavior: SnackBarBehavior.floating,
+          duration: const Duration(seconds: 5),
+          action: SnackBarAction(
+            label: 'RETRY',
+            onPressed: _checkForUpdates,
+          ),
+        ),
+      );
+      return;
     }
     
     try {

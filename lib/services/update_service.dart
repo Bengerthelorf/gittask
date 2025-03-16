@@ -27,8 +27,9 @@ class UpdateService {
   static const String _githubApiUrl = 'https://api.github.com/repos/Bengerthelorf/gittask/releases/latest';
   static const String _githubRepoUrl = 'https://github.com/Bengerthelorf/gittask';
   
-  // Check if network permission issues exist on macOS
+  // Check if network permission issues exist
   static Future<bool> openNetworkPermissionsIfNeeded() async {
+    // For macOS - handle specific permission issues
     if (Platform.isMacOS) {
       try {
         // Try a simple network request
@@ -49,8 +50,23 @@ class UpdateService {
           return opened ?? false;
         }
       }
+    } 
+    
+    // For Android - check basic connectivity
+    else if (Platform.isAndroid) {
+      try {
+        final result = await InternetAddress.lookup('api.github.com')
+            .timeout(const Duration(seconds: 3));
+        return result.isNotEmpty && result[0].rawAddress.isNotEmpty;
+      } catch (e) {
+        debugPrint('Android network check failed: $e');
+        // Network might be unavailable, but permissions are likely OK
+        // Just return false to indicate network issues
+        return false;
+      }
     }
-    return true; // Not macOS or no permission issues detected
+    
+    return true; // Default to true for other platforms
   }
   
   // Open GitHub repo page in browser as fallback
