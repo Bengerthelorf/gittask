@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'providers/repository_provider.dart';
+import 'providers/theme_provider.dart';
 import 'services/storage_service.dart';
 import 'screens/home_screen.dart';
 import 'utils/constants.dart';
@@ -9,7 +11,7 @@ import 'utils/theme.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // 初始化存储服务
+  // Initialize storage service
   final storageService = StorageService();
   await storageService.init();
   
@@ -23,15 +25,38 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => RepositoryProvider(storageService),
-      child: MaterialApp(
-        title: AppConstants.appName,
-        theme: AppTheme.lightTheme,
-        darkTheme: AppTheme.darkTheme,
-        themeMode: ThemeMode.system,
-        home: const HomeScreen(),
-        debugShowCheckedModeBanner: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => RepositoryProvider(storageService),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => ThemeProvider(),
+        ),
+      ],
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          return DynamicColorBuilder(
+            builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+              return MaterialApp(
+                title: AppConstants.appName,
+                theme: AppTheme.getLightTheme(
+                  useDynamicColor: themeProvider.useDynamicColor, 
+                  seedColor: themeProvider.seedColor,
+                  dynamicLightColorScheme: lightDynamic,
+                ),
+                darkTheme: AppTheme.getDarkTheme(
+                  useDynamicColor: themeProvider.useDynamicColor, 
+                  seedColor: themeProvider.seedColor,
+                  dynamicDarkColorScheme: darkDynamic,
+                ),
+                themeMode: themeProvider.themeMode,
+                home: const HomeScreen(),
+                debugShowCheckedModeBanner: false,
+              );
+            },
+          );
+        },
       ),
     );
   }

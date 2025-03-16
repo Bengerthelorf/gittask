@@ -333,11 +333,11 @@ class _RepositoryGitGraphState extends State<RepositoryGitGraph> {
     return _branchInfoMap[branchName]?.xPosition ?? _leftPadding;
   }
   
-  /// 检查是否应该在特定分支上显示合并节点
-  bool _shouldShowMergeNodeOnBranch(String commitId, String branchName) {
-    return _mergePointBranches.containsKey(commitId) && 
-           _mergePointBranches[commitId]!.contains(branchName);
-  }
+  // /// 检查是否应该在特定分支上显示合并节点
+  // bool _shouldShowMergeNodeOnBranch(String commitId, String branchName) {
+  //   return _mergePointBranches.containsKey(commitId) && 
+  //          _mergePointBranches[commitId]!.contains(branchName);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -441,7 +441,7 @@ class _RepositoryGitGraphState extends State<RepositoryGitGraph> {
             }
             
             if (branchInfo == null) {
-              return SizedBox(height: _rowHeight);
+              return const SizedBox(height: _rowHeight);
             }
             
             return SizedBox(

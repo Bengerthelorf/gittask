@@ -5,6 +5,7 @@ import '../providers/repository_provider.dart';
 import '../utils/constants.dart';
 import '../widgets/repository_card.dart';
 import 'repository_screen.dart';
+import 'settings_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,6 +24,95 @@ class HomeScreen extends StatelessWidget {
             },
           ),
         ],
+      ),
+      drawer: Drawer(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(16),
+            bottomRight: Radius.circular(16),
+          ),
+        ),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            Container(
+              height: 160,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text(
+                    AppConstants.appName,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Git-Inspired Task Management',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer.withOpacity(0.8),
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.folder_outlined,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              title: const Text('Repositories'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: Icon(
+                Icons.settings_outlined,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+              title: const Text('Settings'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SettingsScreen()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.info_outline,
+                color: Theme.of(context).colorScheme.tertiary,
+              ),
+              title: const Text('About'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                showAboutDialog(
+                  context: context,
+                  applicationName: AppConstants.appName,
+                  applicationVersion: '1.0.1',
+                  applicationLegalese: '©2025 GitTask',
+                  children: [
+                    const SizedBox(height: 16),
+                    const Text(
+                      'GitTask is a task management app that implements Git concepts for better task tracking and management.',
+                    ),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Consumer<RepositoryProvider>(
         builder: (context, repositoryProvider, child) {
@@ -70,8 +160,9 @@ class HomeScreen extends StatelessWidget {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.large(
         onPressed: () => _showAddRepositoryDialog(context),
+        elevation: 3,
         child: const Icon(Icons.add),
       ),
     );
@@ -86,6 +177,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  // Rest of the existing methods remain unchanged...
   void _showAddRepositoryDialog(BuildContext context) {
     final nameController = TextEditingController();
     final descriptionController = TextEditingController();

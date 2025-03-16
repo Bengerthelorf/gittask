@@ -11,21 +11,30 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   
-  # 状态管理
+  # State management
   provider: ^6.0.5
   
-  # 本地存储
+  # Local storage
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  shared_preferences: ^2.2.0
   
-  # UUID生成
+  # UUID generation
   uuid: ^3.0.7
   
-  # 日期时间格式化
+  # Date time formatting
   intl: ^0.18.0
   
-  # 图表绘制
+  # Chart rendering
   fl_chart: ^0.62.0
+  
+  # Network
+  http: ^1.1.0
+  url_launcher: ^6.1.14
+  package_info_plus: ^4.1.0
+  
+  # Dynamic theming
+  dynamic_color: ^1.6.5
 
 dev_dependencies:
   flutter_test:
