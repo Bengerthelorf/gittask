@@ -6,6 +6,7 @@ import '../models/commit.dart';
 import '../providers/repository_provider.dart';
 import '../widgets/branch_card.dart';
 import 'branch_screen.dart';
+import 'repository_history_screen.dart';
 
 class RepositoryScreen extends StatelessWidget {
   final Repository repository;
@@ -18,6 +19,12 @@ class RepositoryScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(repository.name),
         actions: [
+          // Add Git Graph button
+          IconButton(
+            icon: const Icon(Icons.account_tree),
+            onPressed: () => _navigateToGitGraph(context, repository),
+            tooltip: 'View Git Graph',
+          ),
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
@@ -101,6 +108,15 @@ class RepositoryScreen extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => _showAddBranchDialog(context, repository),
         child: const Icon(Icons.add),
+      ),
+    );
+  }
+
+  void _navigateToGitGraph(BuildContext context, Repository repository) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => RepositoryHistoryScreen(repository: repository),
       ),
     );
   }
