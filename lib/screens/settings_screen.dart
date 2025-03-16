@@ -222,7 +222,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     showAboutDialog(
                       context: context,
                       applicationName: AppConstants.appName,
-                      applicationVersion: '1.0.2',
+                      applicationVersion: '1.0.2-1',
                       applicationLegalese: '©2025 GitTask',
                       children: [
                         const SizedBox(height: 16),
