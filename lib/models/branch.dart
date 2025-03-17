@@ -139,7 +139,7 @@ class Branch {
     commits.add(
       Commit(
         taskId: 'merge',
-        message: 'Merge branch: ${sourceBranch.name} -> ${name}', // changed from '合并分支: ${sourceBranch.name} -> ${name}'
+        message: 'Merge branch: ${sourceBranch.name} -> $name', // changed from '合并分支: ${sourceBranch.name} -> ${name}'
         oldState: {'branchId': sourceBranch.id},
         newState: {'branchId': id},
       ),

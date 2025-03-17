@@ -100,7 +100,7 @@ class BranchCard extends StatelessWidget {
                         const SizedBox(height: 4),
                         LinearProgressIndicator(
                           value: progress,
-                          backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
+                          backgroundColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(4),
                         ),
                       ],

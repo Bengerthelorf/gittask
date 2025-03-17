@@ -492,7 +492,7 @@ class _RepositoryGitGraphState extends State<RepositoryGitGraph> {
 
     return Card(
       elevation: 0,
-      color: theme.colorScheme.surfaceVariant.withOpacity(0.7),
+      color: theme.colorScheme.surfaceContainerHighest.withOpacity(0.7),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       clipBehavior: Clip.antiAlias,
       margin: EdgeInsets.zero,

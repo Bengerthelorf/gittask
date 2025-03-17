@@ -183,7 +183,7 @@ class GitGraph extends StatelessWidget {
             child: Card(
               elevation: 0,
               margin: EdgeInsets.zero,
-              color: Theme.of(context).colorScheme.surfaceVariant,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.only(left: 16, top: 8, right: 16, bottom: 4),
@@ -294,10 +294,10 @@ class GitGraphPainter extends CustomPainter {
   
   @override
   void paint(Canvas canvas, Size size) {
-    final double nodeSize = 24.0; // 节点大小
-    final double nodeRadius = nodeSize / 2;
-    final double lineWidth = 2.0; // 线宽
-    final double nodeCenterX = 30.0; // 节点中心X坐标
+    const double nodeSize = 24.0; // 节点大小
+    const double nodeRadius = nodeSize / 2;
+    const double lineWidth = 2.0; // 线宽
+    const double nodeCenterX = 30.0; // 节点中心X坐标
     
     for (int i = 0; i < commits.length; i++) {
       final commit = commits[i];
